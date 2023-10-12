@@ -87,7 +87,7 @@ const kakaoStrategyConfig = new KakaoStrategy({
             if(existingUser) return done(null, existingUser)
             else {
                 const user = new User()
-
+                user.username = profile.username
                 user.kakaoId = profile.id
                 user.email = profile._json.kakao_account.email
                 user.save()
