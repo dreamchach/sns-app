@@ -1,9 +1,7 @@
 const express = require('express')
 const { default: mongoose } = require('mongoose')
 const app = express()
-const config = require('config')
-const serverConfig = config.get('server')
-const port = serverConfig.port
+const port = 4000
 const path = require('path')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
