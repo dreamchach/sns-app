@@ -4,12 +4,9 @@ const passport = require('passport')
 const User = require('../models/users.model')
 
 usersRouter.post('/signup', async(req, res) => {
-    console.log(req.body)
-    
     const user = new User(req.body)
     try {
         await user.save()
-        res.redirect('/login')
     } catch (error) {
         console.log(error)
     }
@@ -21,25 +18,17 @@ usersRouter.post('/login', (req, res, next) => {
 
         req.logIn(user, function (error) {
             if(error) return next(error)
-            res.redirect('/posts')
         })
     })(req, res, next)
 })
 usersRouter.post('/logout', (req, res, next) => {
     req.logOut(function(error) {
         if(error) return next(error)
-        res.redirect('/login')
     })
 })
 usersRouter.get('/google', passport.authenticate('google'))
-usersRouter.get('/google/callback', passport.authenticate('google', {
-    successReturnToOrRedirect: '/posts',
-    failureRedirect : '/login'
-}))
+usersRouter.get('/google/callback', passport.authenticate('google'))
 usersRouter.get('/kakao', passport.authenticate('kakao'))
-usersRouter.get('/kakao/callback', passport.authenticate('kakao', {
-    successReturnToOrRedirect : '/posts',
-    failureRedirect : '/login'
-}))
+usersRouter.get('/kakao/callback', passport.authenticate('kakao'))
 
 module.exports = usersRouter

@@ -7,15 +7,13 @@ function checkAuthenticated(req, res, next) {
     if(req.isAuthenticated()) {
         return next()
     }
-    res.redirect('/login')
 }
 
 // Public Route
 function checkNotAuthenticated(req, res, next) {
-    if(req.isAuthenticated()) {
-        return res.redirect('/posts')
+    if(!req.isAuthenticated()) {
+        return next()
     }
-    next()
 }
 
 function checkPostOwnerShip (req, res, next) {
@@ -23,25 +21,21 @@ function checkPostOwnerShip (req, res, next) {
         Post.findById(req.params.id)
             .then((post) => {
                 if(!post) {
-                    req.flash('error', '포스트가 없습니다')
-                    res.redirect('back')
+                    console.log('포스트가 없습니다')
                 } else {
                     if (post.author.id.equals(req.user._id)) {
                         req.post = post
                         next()                        
                     } else {
-                        req.flash('error', '권한이 없습니다')
-                        res.redirect('back')
+                        console.log('권한이 없습니다')
                     }
                 }
             })
             .catch((error) => {
-                req.flash('error', '에러가 발생했습니다')
-                res.redirect('back')
+                console.log('에러가 발생했습니다')
             })
     }else {
-        req.flash('error', '로그인을 먼저 해주세요')
-        res.redirect('/login')
+        console.log('로그인을 먼저 해주세요')
     }
 }
 
@@ -54,17 +48,14 @@ function checkCommentOwnership(req, res, next) {
                     next()
                 }
                 else {
-                    req.flash('error', '권한이 없습니다')
-                    res.redirect('back')
+                    console.log('권한이 없습니다')
                 }
             })
             .catch((error) => {
-                req.flash('error', '댓글을 찾는 도중에 에러가 발생했습니다')
-                res.redirect('back')
+                console.log('댓글을 찾는 도중에 에러가 발생했습니다')
             })
     } else {
-        req.flash('error', '로그인을 해주세요')
-        res.redirect('/login')
+        console.log('로그인을 해주세요')
     }
 }
 
@@ -75,17 +66,14 @@ function checkIsMe(req, res, next) {
                 if(user._id.equals(req.user._id)) {
                     next()
                 } else {
-                    req.flash('error', '권한이 없습니다')
-                    res.redirect('/profile/' + req.params.id)
+                    console.log('권한이 없습니다')
                 }
             })
             .catch((error) => {
-                req.flash('error', '유저를 찾는데 에러가 발생했습니다')
-                res.redirect('/profile/' + req.params.id)
+                console.log('유저를 찾는데 에러가 발생했습니다')
             })
     } else {
-        req.flash('error', '먼저 로그인을 해주세요')
-        res.redirect('/login')
+        console.log('먼저 로그인을 해주세요')
     }
 }
 

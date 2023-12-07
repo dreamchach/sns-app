@@ -10,28 +10,23 @@ router.put('/', checkAuthenticated, (req, res) => {
                 const updatedLikes = post.likes.filter((like) => like !== req.user._id.toString())
                 Post.findByIdAndUpdate(post._id, {likes : updatedLikes})
                     .then(() => {
-                        req.flash('success', '좋아요를 업데이트 했습니다')
-                        res.redirect('back')
+                        console.log('like')
                     })
                     .catch((error) => {
-                        req.flash('error', '좋아요를 업데이트하는데 에러가 발생했습니다')
-                        res.redirect('back')
+                        console.log('error')
                     })
             } else {
                 Post.findByIdAndUpdate(post._id, {likes : post.likes.concat([req.user._id])})
                     .then(() => {
-                        req.flash('success', '좋아요를 업데이트 했습니다')
-                        res.redirect('back')
+                        console.log('like')
                     })
                     .catch((error) => {
-                        req.flash('error', '좋아요를 업데이트하는데 에러가 발생했습니다')
-                        res.redirect('back')
+                        console.log('error')
                     })
             }
         })
         .catch((error) => {
-            req.flash('error', '포스트를 찾지 못했습니다')
-            res.redirect('back')
+            console.log('not found post')
         })
 })
 

@@ -4,7 +4,6 @@ const router = express.Router()
 const Post = require('../models/posts.model')
 const multer = require('multer')
 const path = require('path')
-const Comment = require('../models/comments.model')
 
 const storageEngine = multer.diskStorage({
     destination : (req, file, callback) => {
@@ -27,12 +26,10 @@ router.post('/', checkAuthenticated, upload, (req, res, next) => {
             username : req.user.username
         }
     }).then(() => {
-        req.flash('success', '포스트 생성 성공')
-        res.redirect('back')
+        console.log(image)
     })
     .catch((error) => {
-        req.flash('error', '포스트 생성 실패')
-        res.redirect('back')
+        console.log('error')
     })
 })
 
@@ -42,40 +39,34 @@ router.get('/', checkAuthenticated, (req, res) => {
         .sort({createdAt : -1})
         .exec()
         .then((posts) => {
-            res.render('posts/index', {
-                posts : posts
-            })
+            console.log(posts)
         })
         .catch((error) => console.log(error))
 })
 
+/*
 router.get('/:id/edit', checkPostOwnerShip, (req, res) => {
-    res.render('posts/edit', {
-        post : req.post
-    })
+    console.log(req.post)
 })
+*/
 
 router.put('/:id', checkPostOwnerShip, (req, res) => {
     Post.findByIdAndUpdate(req.params.id, req.body)
         .then((post) => {
-            req.flash('success', '게시물 수정을 완료했습니다')
-            res.redirect('/posts')
+            console.log(post)
         })
         .catch((error) => {
-            req.flash('error', '게시물을 수정하는데 오류가 발생했습니다')
-            res.redirect('/posts')
+            console.log('error')
         })
 })
 
 router.delete('/:id', checkPostOwnerShip, (req, res) => {
     Post.findByIdAndDelete(req.params.id)
         .then((post) => {
-            req.flash('success', '게시물을 지우는데 성공했습니다')
-            res.redirect('/posts')
+            console.log(post)
         })
         .catch((error) => {
-            req.flash('error', '게시물을 지우는데 실패했습니다')
-            res.redirect('/posts')
+            console.log('error')
         })
 })
 

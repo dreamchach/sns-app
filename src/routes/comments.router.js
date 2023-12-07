@@ -16,57 +16,45 @@ router.post('/', checkAuthenticated, (req, res) => {
                     post.comments.push(comment)
                     post.save()
 
-                    req.flash('success', '댓글이 생성되었습니다')
-                    res.redirect('back')
+                    console.log('댓글이 생성되었습니다')
                 })
                 .catch((error) => {
-                    req.flash('error', '댓글을 생성 중 에러가 발생했습니다')
-                    console.log(error)
-                    res.redirect('/posts')
+                    console.log('댓글을 생성 중 에러가 발생했습니다')
                 })
         })
         .catch((error) => {
-            console.log(error)
-            req.flash('error', '댓글을 생성 중 에러가 발생했습니다')
-            res.redirect('/posts')
+            console.log('댓글을 생성 중 에러가 발생했습니다')
         })
 })
 
 router.delete('/:commentId', checkCommentOwnership, (req, res) => {
     Comment.findByIdAndDelete(req.params.commentId)
         .then(() => {
-            req.flash('success', '댓글을 삭제했습니다')
-            res.redirect('back')
+            console.log('댓글을 삭제했습니다')
         })
         .catch((error) => {
-            req.flash('error', '댓글 삭제 중 에러가 발생했습니다')
-            res.redirect('back')
+            console.log('댓글 삭제 중 에러가 발생했습니다')
         })
 })
 
 router.get('/:commentId/edit', checkCommentOwnership, (req, res) => {
     Post.findById(req.params.id)
         .then((post) => {
-            res.render('comments/edit', {
-                post : post,
-                comment : req.comment
-            })
+            console.log(post)
+            console.log(req.comment)
         })
         .catch((error) => {
-            req.flash('error', '에러가 발생했습니다')
-            res.redirect('back')
+            console.log('에러가 발생했습니다')
         })
 })
 
 router.put('/:commentId', checkCommentOwnership, (req, res) => {
     Comment.findByIdAndUpdate(req.params.commentId, req.body)
         .then(() => {
-            req.flash('success', '댓글을 수정하는데 성공했습니다')
-            res.redirect('/posts')
+            console.log('댓글을 수정하는데 성공했습니다')
         })
         .catch((error) => {
-            req.flash('error', '댓글을 수정하는데 에러가 발생했습니다')
-            res.redirect('back')
+            console.log('댓글을 수정하는데 에러가 발생했습니다')
         })
 })
 

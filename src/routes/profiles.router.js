@@ -12,35 +12,31 @@ router.get('/', checkAuthenticated, (req, res) => {
         .then((posts) => {
             User.findById(req.params.id)
                 .then((user) => {
-                    res.render('profile/index', {
-                        posts : posts,
-                        user : user
-                    })
+                    console.log(user)
+                    console.log(posts)
                 })
                 .catch((error) => {
-                    req.flash('error', '없는 유저입니다')
-                    res.redirect('back')
+                    console.log('error')
                 })
         })
         .catch((error) => {
-            req.flash('error', '게시물을 가져오는데 실패했습니다')
-            res.redirect('back')
+            console.log('error')
         })
 })
 
+/*
 router.get('/edit', checkIsMe, (req, res) => {
-    res.render('profile/edit', {user : req.user})
+    console.log(req.user)
 })
+*/
 
 router.put('/', checkIsMe, (req, res) => {
     User.findByIdAndUpdate(req.params.id, req.body)
         .then(() => {
-            req.flash('success', '유저 데이터를 업데이트하는데 성공했습니다')
-            res.redirect('/profile/' + req.params.id)
+            console.log(req.params.id, req.body)
         })
         .catch((error) => {
-            req.flash('error', '유저 데이터를 업데이트하는데 에러가 발생했습니다')
-            res.redirect('back')
+            console.log('error')
         })
 })
 

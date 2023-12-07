@@ -24,27 +24,8 @@ const localStrategyConfig = new LocalStrategy(user, (email, password, done) => {
     .catch((error) => {
         if(error) return done(error)
     })
-    
-    /*
-    mongoose v5.0부터 콜백함수가 지원되지 않기 때문에 수정
-
-    User.findOne({
-        email : email.toLocaleLowerCase()
-    }, (error, user) => {
-        if(error) return done(error)
-        if(!user) {
-            return done(null, false, {msg : `email ${email} not found`})
-        }
-
-        user.comparePassword(password, (error, isMatch) => {
-            if(error) return done(error)
-            if(isMatch) return done(null, user)
-
-            return done(null, false, {msg : 'Invalid email or password'})
-        })
-    })
-    */
 })
+
 const googleStrategyConfig = new GoogleStrategy({
     clientID : process.env.googleClientID,
     clientSecret : process.env.googleClientSecret,

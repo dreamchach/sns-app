@@ -6,13 +6,10 @@ const User = require('../models/users.model')
 router.get('/', checkAuthenticated, async (req, res) => {
     await User.find({})
         .then((users) => {
-            res.render('friends/index', {
-                users : users
-            })
+            console.log(users)
         })
         .catch((error) => {
-            req.flash('error', '유저를 가져오는데 에러가 발생했습니다')
-            res.redirect('/posts')
+            console.log('error')
         })
 })
 
@@ -22,17 +19,14 @@ router.put('/:id/add-friend', checkAuthenticated, (req, res) => {
             console.log(user.friendsRequests.concat([req.user._id]))
             User.findByIdAndUpdate(user._id, {friendsRequests : user.friendsRequests.concat([req.user._id])})
                 .then(() => {
-                    req.flash('success', '친구 추가 성공했습니다')
-                    res.redirect('back')
+                    console.log('success friend add')
                 })
                 .catch((error) => {
-                    req.flash('error', '친구 추가하는데 에러가 발생했습니다')
-                    res.redirect('back')
+                    console.log('error')
                 })
         })
         .catch((error) => {
-            req.flash('error', '유저가 없거나 유저를 찾는데 실패했습니다')
-            res.redirect('back')
+            console.log('friend is not found')
         })
 })
 
@@ -42,17 +36,14 @@ router.put('/:firstId/remove-friend-request/:secondId', checkAuthenticated, (req
             const filteredFriendsRequests = user.friendsRequests.filter((friendId) => friendId !== req.params.secondId)
             User.findByIdAndUpdate(user._id, {friendsRequests : filteredFriendsRequests})
                 .then(() => {
-                    req.flash('success', '친구 요청 취소를 성공했습니다')
-                    res.redirect('back')
+                    console.log('친구 요청 취소를 성공했습니다')
                 })
                 .catch((error) => {
-                    req.flash('error', '친구 요청 취소를 하는데 에러가 발생했습니다')
-                    res.redirect('back')
+                    console.log('친구 요청 취소를 하는데 에러가 발생했습니다')
                 })
         })  
         .catch((error) => {
-            req.flash('error', '유저를 찾지 못했습니다')
-            res.redirect('back')
+            console.log('유저를 찾지 못했습니다')
         })
 })
 
@@ -66,22 +57,18 @@ router.put('/:id/accept-friend-request', checkAuthenticated, (req, res) => {
                         friendsRequests : req.user.friendsRequests.filter((friendId) => friendId !== senderUser._id.toString())
                     })
                         .then(() => {
-                            req.flash('success', '친구 추가를 성공했습니다')
-                            res.redirect('back')
+                            console.log('친구 추가를 성공했습니다')
                         })
                         .catch((error) => {
-                            req.flash('error', '친구 추가하는데 실패했습니다')
-                            res.redirect('back')
+                            console.log('친구 추가하는데 실패했습니다')
                         })  
                 })
                 .catch((error) => {
-                    req.flash('error', '친구를 추가하는데 실패했습니다')
-                    res.redirect('back')
+                    console.log('친구를 추가하는데 실패했습니다')
                 })
         })
         .catch((error) => {
-            req.flash('error', '유저를 찾지 못했습니다')
-            res.redirect('back')
+            console.log('유저를 찾지 못했습니다')
         })
 })
 
@@ -93,22 +80,18 @@ router.put('/:id/remove-friend', checkAuthenticated, (req, res) => {
                     console.log(req.user)
                     User.findByIdAndUpdate(req.user._id, {friends : req.user.friends.filter((friendId) =>friendId !== req.params.id.toString())})
                         .then(() => {
-                            req.flash('success', '친구 삭제하는데 성공했습니다')
-                            res.redirect('back')
+                            console.log('친구 삭제하는데 성공했습니다')
                         })
                         .catch((error) => {
-                            req.flash('error', '친구 취소하는데 실패했습니다')
-                            res.redirect('back')
+                            console.log('친구 취소하는데 실패했습니다')
                         })
                 })
                 .catch((error) => {
-                    req.flash('error', '친구를 삭제하는데 실패했습니다')
-                    res.redirect('back')
+                    console.log('친구를 삭제하는데 실패했습니다')
                 })
         })
         .catch((error) => {
-            req.flash('error', '유저를 찾는데 실패했습니다')
-            res.redirect('back')
+            console.log('유저를 찾는데 실패했습니다')
         })
 })
 
