@@ -5,8 +5,15 @@ const Signup = () => {
   const [nickname, setNickname] = useState('')
   const [id, setId] = useState('')
   const [password, setPassword] = useState('')
+  const [photo, setPhoto] = useState('')
 
   const fileupload = (file) => {
+    let reader = new FileReader()
+    reader.onload = (data) => {
+      setPhoto(data.target.result)
+    }
+    reader.readAsDataURL(file[0])
+
     const formData = new FormData()
     formData.append('file', file[0])
     console.log(formData)
@@ -18,7 +25,9 @@ const Signup = () => {
         <div className='h-90vh flex flex-col items-center justify-center'>
             <div className='flex items-center justify-center text-2xl'>SIGN UP</div>
             <div className='flex flex-col items-center justify-center mt-12 gap-2.5'>
-              <div className='w-52 h-52 border rounded-full'></div>
+              <div className='w-52 h-52 border rounded-full overflow-hidden flex items-center justify-center'>
+                {photo !== '' && <img src={photo} alt='프로필 사진'/>}
+              </div>
               <div>
                 <label htmlFor='file' className='bg-basic-blue hover:bg-hover-blue shadow hover:shadow-xl px-2.5 py-1 rounded text-white relative bottom-8 left-14'>Edit</label>
                 <input className='hidden' id='file' type='file' accept='image/*' onChange={(event) => fileupload(event.target.files)}/>  

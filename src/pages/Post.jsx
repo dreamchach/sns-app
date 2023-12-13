@@ -14,11 +14,31 @@ const Post = () => {
     const swiperElRef = useRef(null);
     const [heart, setHeart] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
-    const [edit, setEdit] = useState(false)
-    const [files, setFiles] = useState(false)
+    const [edit, setEdit] = useState(true)
+    const [files, setFiles] = useState([])
+
+    const multifileupload = (files) => {
+        let photo = []
+        for(let file of files) {
+          let reader = new FileReader()
+    
+          reader.onload = (data) => {
+            photo.push(data.target.result)
+            setFiles(photo)
+            //setUserPhoto(data.target.result)
+          }
+    
+          reader.readAsDataURL(file)
+        } 
+      }
+      
+      const popupImage = (item) => {
+        console.log(item)
+        let array = files.filter((i) => i !== item)
+        setFiles(array)
+      }
 
     useEffect(() => {
-        console.log(swiperElRef)
         if(swiperElRef.current !== null) {
             // listen for Swiper events using addEventListener
             swiperElRef.current.addEventListener('swiperprogress', (e) => {
@@ -78,8 +98,7 @@ const Post = () => {
                     }
                     {edit &&
                         <div className='pt-12'>
-                            {
-
+                            {files.length > 0 && 
                                 <div className='pb-12'>
                                     <swiper-container
                                         ref={swiperElRef}
@@ -87,9 +106,16 @@ const Post = () => {
                                         navigation="true"
                                         pagination="true"
                                     >
-                                        <swiper-slide>Slide 1</swiper-slide>
-                                        <swiper-slide>Slide 2</swiper-slide>
-                                        <swiper-slide>Slide 3</swiper-slide>
+                            {files.map((item) => 
+                              <swiper-slide>
+                                <div 
+                                    className='flex items-center justify-center'
+                                    onClick={() => popupImage(item)}
+                                >
+                                  <img src={item} alt='post image' className='max-w-52 max-h-52 object-contain' />
+                                </div>
+                              </swiper-slide>
+                            )}
                                     </swiper-container>
                                 </div>
                             }
@@ -97,7 +123,7 @@ const Post = () => {
                                 <label htmlFor='file'  className='bg-basic-blue hover:bg-hover-blue shadow hover:shadow-xl px-5 py-2.5 rounded-xl mt-2.5 transition text-white flex items-center gap-2.5'>
                                     <MdFileUpload /> 이미지 업로드
                                 </label>
-                                <input className='hidden' id='file' type='file' accept='image/*' />  
+                                <input multiple onChange={(event) => multifileupload(event.target.files)} className='hidden' id='file' type='file' accept='image/*' />  
                             </div>
                             <div className='flex justify-end'>
                                 <button className='bg-basic-blue hover:bg-hover-blue shadow hover:shadow-xl px-5 py-2.5 rounded-xl mt-2.5 transition text-white'>수정</button>

@@ -32,11 +32,39 @@ const Users = () => {
   const [postModal, setPostModal] = useState(false)
   const [userModal, setUserModal] = useState(false)
   const [nickname, setNickname] = useState('')
+  const [userPhoto, setUserPhoto] = useState('')
+  const [postPhoto, setPostPhoto] = useState([])
 
   const fileupload = (file) => {
+    let reader = new FileReader()
+    reader.onload = (data) => {
+      setUserPhoto(data.target.result)
+    }
+    reader.readAsDataURL(file[0])
+
     const formData = new FormData()
     formData.append('file', file[0])
     console.log(formData)
+  }
+
+  const multifileupload = (files) => {
+    let photo = []
+    for(let file of files) {
+      let reader = new FileReader()
+
+      reader.onload = (data) => {
+        photo.push(data.target.result)
+        setPostPhoto(photo)
+        //setUserPhoto(data.target.result)
+      }
+
+      reader.readAsDataURL(file)
+    } 
+  }
+
+  const popupImage = (item) => {
+    let array = postPhoto.filter((i) => i !== item)
+    setPostPhoto(array)
   }
 
   useEffect(() => {
@@ -59,7 +87,9 @@ const Users = () => {
         <div className='mt-12 my-5'>
           <div className='flex justify-between items-center gap-2.5 px-5'>
             <div className='flex gap-2.5 items-center'>
-              <div className='w-12 h-12 border rounded-full'></div>
+              <div className='w-12 h-12 border rounded-full'>
+                
+              </div>
               <div>
                 <div>UserNickName</div>
                 <div className='text-xs'>UserId</div>
@@ -75,7 +105,10 @@ const Users = () => {
               {openMenu &&
                 <div className='right-0 absolute top-5 w-16 flex flex-col items-center text-base mt-2.5 rounded-xl bg-basic-blue shadow w-40 '>
                   <div
-                    onClick={() => setUserModal(true)}
+                    onClick={() => {
+                      setUserModal(true)
+                      setOpenMenu(false)
+                    }}
                     className='w-full flex justify-center px-2.5 py-1 hover:bg-hover-blue rounded-xl transition'
                   >
                     프로필 변경
@@ -89,7 +122,9 @@ const Users = () => {
                 style={customStyles}
               >
             <div className='flex flex-col items-center justify-center mt-12 gap-2.5'>
-              <div className='w-52 h-52 border rounded-full'></div>
+              <div className='w-52 h-52 border rounded-full overflow-hidden flex items-center justify-center'>
+                {userPhoto !== '' && <img src={userPhoto} alt='프로필 사진'/>}
+              </div>
               <div>
                 <label htmlFor='file' className='bg-basic-blue hover:bg-hover-blue shadow hover:shadow-xl px-2.5 py-1 rounded text-white relative bottom-8 left-14'>Edit</label>
                 <input className='hidden' id='file' type='file' accept='image/*' onChange={(event) => fileupload(event.target.files)}/>  
@@ -102,12 +137,16 @@ const Users = () => {
                 className='border rounded-xl px-5 py-2.5'
               />
               <button
+                onClick={() => setUserPhoto('')}
                 className='w-full border py-2.5 px-5 rounded-xl bg-basic-blue text-white text-bold shadow hover:shadow-xl hover:bg-hover-blue transition'
               >
                 수정
               </button>
               <button
-                onClick={() => setUserModal(false)}
+                onClick={() => {
+                  setUserModal(false)
+                  setUserPhoto('')
+                }}
                 className='w-full border py-2.5 px-5 rounded-xl bg-none-text text-bold shadow hover:shadow-xl hover:bg-none-button transition'
               >
                 취소
@@ -182,28 +221,45 @@ const Users = () => {
                     style={customStyles}
                 >
                     <textarea rows='4' className='border w-full rounded-xl px-5 py-2.5' />
-                    <div className='mt-14 relative z-10 w-90vw'>
+                    {postPhoto.length > 0 &&
+                      <div className='mt-14 relative z-10 w-90vw'>
                         <swiper-container
                             ref={swiperElRef}
                             slides-per-view="1"
                             navigation="true"
                             pagination="true"
                         >
-                            <swiper-slide>Slide 1</swiper-slide>
-                            <swiper-slide>Slide 2</swiper-slide>
-                            <swiper-slide>Slide 3</swiper-slide>
+                            {postPhoto.map((item) => 
+                              <swiper-slide>
+                                <div 
+                                  className='flex items-center justify-center'
+                                  onClick={() => popupImage(item)}
+                                >
+                                  <img src={item} alt='post image' className='max-w-52 max-h-52 object-contain' />
+                                </div>
+                              </swiper-slide>
+                            )}
                         </swiper-container>
-                    </div>
+                      </div>
+                    }
                     <div className='flex items-center gap-2.5 justify-center mt-12'>
                         <label htmlFor='file'  className='bg-basic-blue hover:bg-hover-blue shadow hover:shadow-xl px-5 py-2.5 rounded-xl mt-2.5 transition text-white flex items-center gap-2.5'>
                             <MdFileUpload /> 이미지 업로드
                         </label>
-                        <input className='hidden' id='file' type='file' accept='image/*' />  
+                        <input multiple className='hidden' id='file' type='file' accept='image/*' onChange={(event) => multifileupload(event.target.files)}/>  
                     </div>
                     <div className='flex justify-end mt-12 gap-5'>
-                        <button className='bg-basic-blue hover:bg-hover-blue shadow hover:shadow-xl px-5 py-2.5 rounded-xl mt-2.5 transition text-white'>저장</button>
                         <button 
-                            onClick={() => setPostModal(false)}
+                          onClick={() => setPostPhoto([])}
+                          className='bg-basic-blue hover:bg-hover-blue shadow hover:shadow-xl px-5 py-2.5 rounded-xl mt-2.5 transition text-white'
+                        >
+                          저장
+                        </button>
+                        <button 
+                            onClick={() => {
+                              setPostModal(false)
+                              setPostPhoto([])
+                            }}
                             className='bg-none-text hover:bg-none-button shadow hover:shadow-xl px-5 py-2.5 rounded-xl mt-2.5 transition'
                         >
                             취소
