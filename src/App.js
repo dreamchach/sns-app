@@ -7,6 +7,7 @@ import Posts from './pages/Posts';
 import Post from './pages/Post';
 import Friends from './pages/Friends';
 import Users from './pages/Users';
+import KakaoCb from './pages/KakaoCb';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/post' element={<Post />} errorElement={<NotFound />} />
         <Route path='/friend' element={<Friends />} errorElement={<NotFound />} />
         <Route path='/user' element={<Users />} errorElement={<NotFound />} />
+        <Route path='/auth/kakao/callback' element={<KakaoCb />} errorElement={<NotFound />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>

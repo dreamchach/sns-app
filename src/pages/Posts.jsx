@@ -7,6 +7,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import Modal from 'react-modal'
 import { MdFileUpload } from "react-icons/md";
+import axios from 'axios';
 
 register();
 
@@ -29,6 +30,7 @@ const Post = () => {
     const [heart, setHeart] = useState(false)
     const [modal, setModal] = useState(false)
     const [uploadPhoto, setUploadPhoto] = useState([])
+    const [files, setFiles] = useState([])
 
     const multifileupload = (files) => {
         let photo = []
@@ -43,11 +45,26 @@ const Post = () => {
     
           reader.readAsDataURL(file)
         } 
+        setFiles(files)
     }
 
     const popupImage = (item) => {
         let array = uploadPhoto.filter((i) => i !== item)
         setUploadPhoto(array)
+    }
+
+    const onclick = async () => {
+        console.log(files.length)
+        const formData = new FormData()
+        for(let i = 0; i < files.length; i += 1) {
+            formData.append('files', files[i])
+        }
+        
+        const config = {
+          headers : {'Content-Type' : 'multipart/form-data'}
+        }
+        const res = await axios.post('http://localhost:4000/images', formData, config)
+        console.log(res)
     }
 
     useEffect(() => {
@@ -163,7 +180,10 @@ const Post = () => {
                     <div className='flex justify-end mt-12 gap-5'>
                         <button 
                             className='bg-basic-blue hover:bg-hover-blue shadow hover:shadow-xl px-5 py-2.5 rounded-xl mt-2.5 transition text-white'
-                            onClick={() => setUploadPhoto([])}
+                            onClick={() => {
+                                setUploadPhoto([])
+                                onclick()
+                            }}
                         >
                             저장
                         </button>
