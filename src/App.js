@@ -5,21 +5,20 @@ import NotFound from './pages/NotFound';
 import Signup from './pages/Signup';
 import Posts from './pages/Posts';
 import Post from './pages/Post';
-import Friends from './pages/Friends';
 import Users from './pages/Users';
 import KakaoCb from './pages/KakaoCb';
+import { addressHome, addressPosts, addressSignup, kakaoCallbackUri } from './utill/constant/constant';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Login />} errorElement={<NotFound />} />
-        <Route path='/signup' element={<Signup />} errorElement={<NotFound />} />
-        <Route path='/posts' element={<Posts />} errorElement={<NotFound />} />
-        <Route path='/post' element={<Post />} errorElement={<NotFound />} />
-        <Route path='/friend' element={<Friends />} errorElement={<NotFound />} />
-        <Route path='/user' element={<Users />} errorElement={<NotFound />} />
-        <Route path='/auth/kakao/callback' element={<KakaoCb />} errorElement={<NotFound />} />
+        <Route path={addressHome} element={<Login />} errorElement={<NotFound />} />
+        <Route path={addressSignup} element={<Signup />} errorElement={<NotFound />} />
+        <Route path={addressPosts} element={<Posts />} errorElement={<NotFound />} />
+        <Route path='/post/:id' element={<Post />} errorElement={<NotFound />} />
+        <Route path='/user/:id' element={<Users />} errorElement={<NotFound />} />
+        <Route path={kakaoCallbackUri} element={<KakaoCb />} errorElement={<NotFound />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>

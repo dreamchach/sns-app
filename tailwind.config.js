@@ -16,7 +16,8 @@ module.exports = {
       spacing : {
         '90vh' : '90vh',
         '90vw' : '90vw',
-        '80vh' : '80vh'
+        '80vh' : '80vh',
+        '600' : '600px'
       },
       minWidth : {
         '260' : '260px'

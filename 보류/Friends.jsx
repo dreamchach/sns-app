@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Header from '../components/laylout/Header'
+import Header from '../src/components/laylout/Header'
 import { Link, useLocation } from 'react-router-dom'
 
 const Friends = () => {
@@ -14,7 +14,7 @@ const Friends = () => {
     <div>
         <Header />
         <div>
-            <div className='flex justify-center mt-16 gap-px w-full'>
+            <div className='flex justify-center mt-20 gap-px w-full'>
                 <Link to='#add'>
                     <div className={`transition ${hash === '#add' ? 'bottom-4 h-12' : 'h-8'} hover:bg-hover-blue text-white relative w-24 flex items-center justify-center bg-basic-blue rounded-t-xl py-1 px-2.5`}>
                         친구 추가
