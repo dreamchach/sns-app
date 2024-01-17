@@ -8,7 +8,7 @@ export const typeText = 'text'
 export const typePassword = 'password'
 export const stringLogin = '로그인'
 export const googleLoginApi = '/auth/google/login'
-const redirect_uri = 'http://localhost:3000/auth/kakao/callback'
+const redirect_uri = 'https://react--flourishing-puffpuff-48e2b2.netlify.app/auth/kakao/callback'
 export const callbackKakao = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_RestApiKey}&redirect_uri=${redirect_uri}&response_type=code`
 export const addressSignup = '/signup'
 export const logo = 'MaumTweet'
