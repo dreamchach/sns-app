@@ -30,11 +30,6 @@ const Buttons = () => {
             >
                 <FcGoogle /> {stringGoogleSocialLogin}
             </button>
-            <Link to={callbackKakao}>
-                <button className='w-full flex items-center justify-evenly px-5 py-2.5 rounded-xl text-kakao-black bg-kakao-yellow shadow hover:shadow-xl hover:bg-kakao-hover transition'>
-                    <RiKakaoTalkFill /> {stringKakaoSocialLogin}
-                </button>
-            </Link>
             <Link to={addressSignup}>
                 <button
                     className='flex items-center justify-evenly w-full border py-2.5 px-5 rounded-xl bg-basic-blue text-white text-bold shadow hover:shadow-xl hover:bg-hover-blue transition'
