@@ -18,7 +18,7 @@ function App() {
         <Route path={addressPosts} element={<Posts />} errorElement={<NotFound />} />
         <Route path='/post/:id' element={<Post />} errorElement={<NotFound />} />
         <Route path='/user/:id' element={<Users />} errorElement={<NotFound />} />
-        <Route path={kakaoCallbackUri} element={<KakaoCb />} errorElement={<NotFound />} />
+        <Route path='/auth/kakao/callback' element={<KakaoCb />} errorElement={<NotFound />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
