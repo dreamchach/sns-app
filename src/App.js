@@ -6,8 +6,7 @@ import Signup from './pages/Signup';
 import Posts from './pages/Posts';
 import Post from './pages/Post';
 import Users from './pages/Users';
-import KakaoCb from './pages/KakaoCb';
-import { addressHome, addressPosts, addressSignup, kakaoCallbackUri } from './utill/constant/constant';
+import { addressHome, addressPosts, addressSignup } from './utill/constant/constant';
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
         <Route path={addressPosts} element={<Posts />} errorElement={<NotFound />} />
         <Route path='/post/:id' element={<Post />} errorElement={<NotFound />} />
         <Route path='/user/:id' element={<Users />} errorElement={<NotFound />} />
-        <Route path='/auth/kakao/callback' element={<KakaoCb />} errorElement={<NotFound />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
