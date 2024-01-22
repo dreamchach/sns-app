@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { FcGoogle } from "react-icons/fc";
-import { RiKakaoTalkFill } from "react-icons/ri";
 import { GiButterfly } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
-import { addressSignup, callbackKakao, stringGoogleSocialLogin, stringKakaoSocialLogin, stringSignup } from '../../../utill/constant/constant';
+import { addressSignup, stringGoogleSocialLogin, stringSignup } from '../../../utill/constant/constant';
 import { google } from '../../../utill/functions/login'
 
 const Buttons = () => {
@@ -13,7 +12,9 @@ const Buttons = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        google(googleToken, dispatch)
+        if(googleToken !== '') {
+            google(googleToken, dispatch)
+        }
     }, [googleToken])
 
     const login = useGoogleLogin({
